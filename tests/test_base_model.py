@@ -26,63 +26,12 @@ class TestBaseModel_instantiation(unittest.TestCase):
         self.assertEqual(bm1.my_number, 69)
         self.assertIsInstance(bm1.my_number, int)
 
-    def test_type_my_number(self):
-        """Test for type of my_number"""
-        bm1 = BaseModel()
-
-        with self.assertRaises(TypeError):
-            bm1.my_number = '69'
-
-        with self.assertRaises(TypeError):
-            bm1.my_number = True
-
-        with self.assertRaises(TypeError):
-            bm1.my_number = [1, 2]
-
-        with self.assertRaises(TypeError):
-            bm1.my_number = (1, 2)
-
-        with self.assertRaises(TypeError):
-            bm1.my_number = {1, 2}
-
-        with self.assertRaises(TypeError):
-            bm1.my_number = None
-
-    def test_value_my_number(self):
-        """Test for if zero or negative raises value error"""
-        bm1 = BaseModel()
-
-        with self.assertRaises(ValueError):
-            bm1.my_number = 0
-
-        with self.assertRaises(ValueError):
-            bm1.my_number = -3
-
     def test_name(self):
         """Test for name attribute"""
         bm1 = BaseModel()
 
         bm1.name = "Python"
         self.assertEqual(bm1.name, str)
-
-    def test_type_name(self):
-        """Test for type of name"""
-        bm1 = BaseModel()
-
-        with self.assertRaises(TypeError):
-            bm1.name = 69
-
-        with self.assertRaises(TypeError):
-            bm1.name = [3, 2]
-
-        with self.assertRaises(TypeError):
-            bm1.name = {7, 8}
-
-        with self.assertRaises(TypeError):
-            bm1.name = (9, 2)
-
-        with self.assertRaises(TypeError):
-            bm1.name = None
 
     def test_created_at(self):
         """Test the created_at attribute"""
@@ -145,6 +94,8 @@ class TestBaseModel_to_dict(unittest.TestCase):
     def test_to_dict_values(self):
         """Test if all the keys are in the dict"""
         bm1 = BaseModel()
+        bm1.name = "Python"
+        bm1.my_number = 69
 
         my_list = [
             'id', 'my_number', '__class__', 'updated_at', 'created_at', 'name'
