@@ -23,6 +23,7 @@ class TestBaseModel_instantiation(unittest.TestCase):
         bm1 = BaseModel()
         bm1.my_number = 69
 
+        self.assertTrue(hasattr(bm1, "my_number"))
         self.assertEqual(bm1.my_number, 69)
         self.assertIsInstance(bm1.my_number, int)
 
@@ -31,6 +32,7 @@ class TestBaseModel_instantiation(unittest.TestCase):
         bm1 = BaseModel()
 
         bm1.name = "Python"
+        self.assertTrue(hasattr(bm1, "name"))
         self.assertEqual(bm1.name, str)
 
     def test_created_at(self):
