@@ -51,6 +51,7 @@ class TestBaseModel_instantiation(unittest.TestCase):
 
         self.assertTrue(hasattr(bm1, "created_at"))
         self.assertIsInstance(bm1.created_at, datetime)
+        self.assertEqual(bm1.created_at, bm1.updated_at)
 
     def test_updated_at(self):
         """Test the updated_at attribute"""
@@ -58,8 +59,9 @@ class TestBaseModel_instantiation(unittest.TestCase):
 
         self.assertTrue(hasattr(bm1, "updated_at"))
         self.assertIsInstance(bm1.updated_at, datetime)
+        self.assertEqual(bm1.created_at, bm1.updated_at)
 
-        bm1.id = uuid.uuid4()
+        bm1.save()
 
         self.assertNotEqual(bm1.updated_at, bm1.created_at)
 
