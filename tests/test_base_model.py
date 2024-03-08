@@ -2,6 +2,7 @@
 """Unittest for models.base_model module"""
 import unittest
 import uuid
+
 from models.base_model import BaseModel
 
 
@@ -65,9 +66,7 @@ class TestBaseModel_str(unittest.TestCase):
 
         self.assertIsInstance(bm1.__str__(), str)
 
-        test_str = "[{}] ({}) {}".format(
-            bm1.__class__.__name__, bm1.id, bm1.__dict__()
-            )
+        test_str = "[{}] ({}) {}".format(bm1.__class__.__name__, bm1.id, bm1.__dict__())
         self.assertEqual(bm1.__str__(), test_str)
 
 
@@ -99,9 +98,7 @@ class TestBaseModel_to_dict(unittest.TestCase):
         bm1.name = "Python"
         bm1.my_number = 69
 
-        my_list = [
-            'id', 'my_number', '__class__', 'updated_at', 'created_at', 'name'
-            ]
+        my_list = ["id", "my_number", "__class__", "updated_at", "created_at", "name"]
 
         for key in my_list:
             self.assertIn(key, bm1.__dict__())
