@@ -27,8 +27,8 @@ class BaseModel:
 
     def __init__(self):
         self.id = str(uid())
-        self.created_at = datetime.utcnow()
-        self.updated_at = datetime.utcnow()
+        self.created_at = datetime.now()
+        self.updated_at = self.created_at
 
     def save(self):
         """Update the time"""
