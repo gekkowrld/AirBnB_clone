@@ -25,10 +25,19 @@ class BaseModel:
                                     classes will inherit
     """
 
-    def __init__(self):
-        self.id = str(uid())
-        self.created_at = datetime.now()
-        self.updated_at = self.created_at
+    DATE_FMT = "%Y-%m-%dT%H:%M:%S.%f"
+
+    def __init__(self, *args, **kwargs):
+        if kwargs:
+            for key, val in kwargs.items():
+                if key == "created_at" or key == "updated_at":
+                    setattr(self, key, datetime.strptime(val, BaseModel.DATE_FMT))
+                elif key != "__class__":
+                    setattr(self, key, val)
+        else:
+            self.id = str(uid())
+            self.created_at = datetime.now()
+            self.updated_at = self.created_at
 
     def save(self):
         """Update the time"""
