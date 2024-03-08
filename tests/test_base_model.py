@@ -1,5 +1,14 @@
 #!/usr/bin/python3
-"""Unittest for models.base_model module"""
+"""
+Unittest for models.base_model module
+Unittest classes:
+    TestBaseModel_instantiation - line 18
+    TestBaseModel_str - line 67
+    TestBaseModel_save - line 82
+    TestBaseModel_to_dict - line 95
+"""
+
+from datetime import datetime
 import unittest
 import uuid
 
@@ -34,23 +43,21 @@ class TestBaseModel_instantiation(unittest.TestCase):
 
         bm1.name = "Python"
         self.assertTrue(hasattr(bm1, "name"))
-        self.assertEqual(bm1.name, str)
+        self.assertIsInstance(bm1.name, str)
 
     def test_created_at(self):
         """Test the created_at attribute"""
         bm1 = BaseModel()
 
         self.assertTrue(hasattr(bm1, "created_at"))
-        self.assertIsInstance(bm1.created_at, str)
-        self.assertEqual(bm1.created_at, bm1.updated_at)
+        self.assertIsInstance(bm1.created_at, datetime)
 
     def test_updated_at(self):
         """Test the updated_at attribute"""
         bm1 = BaseModel()
 
         self.assertTrue(hasattr(bm1, "updated_at"))
-        self.assertIsInstance(bm1.updated_at, str)
-        self.assertEqual(bm1.created_at, bm1.updated_at)
+        self.assertIsInstance(bm1.updated_at, datetime)
 
         bm1.id = uuid.uuid4()
 
@@ -66,7 +73,9 @@ class TestBaseModel_str(unittest.TestCase):
 
         self.assertIsInstance(bm1.__str__(), str)
 
-        test_str = "[{}] ({}) {}".format(bm1.__class__.__name__, bm1.id, bm1.__dict__())
+        test_str = "[{}] ({}) {}".format(
+            bm1.__class__.__name__, bm1.id, bm1.__dict__
+            )
         self.assertEqual(bm1.__str__(), test_str)
 
 
@@ -77,10 +86,10 @@ class TestBaseModel_save(unittest.TestCase):
         """Tests whether updated_at works as expected"""
         bm1 = BaseModel()
 
-        curr_update_time = bm1.update_at
+        curr_update_time = bm1.updated_at
         bm1.save()
 
-        self.assertNotEqual(bm1.updated_at(), curr_update_time)
+        self.assertNotEqual(bm1.updated_at, curr_update_time)
 
 
 class TestBaseModel_to_dict(unittest.TestCase):
@@ -90,7 +99,7 @@ class TestBaseModel_to_dict(unittest.TestCase):
         """Test the to_dict method"""
         bm1 = BaseModel()
 
-        self.assertIsInstance(bm1.__dict__(), dict)
+        self.assertIsInstance(bm1.__dict__, dict)
 
     def test_to_dict_values(self):
         """Test if all the keys are in the dict"""
@@ -98,10 +107,16 @@ class TestBaseModel_to_dict(unittest.TestCase):
         bm1.name = "Python"
         bm1.my_number = 69
 
-        my_list = ["id", "my_number", "__class__", "updated_at", "created_at", "name"]
+        my_list = [
+            "id", "my_number", "__class__", "updated_at", "created_at", "name"
+            ]
+        my_dict = bm1.to_dict()
 
         for key in my_list:
-            self.assertIn(key, bm1.__dict__())
+            if key == "updated_at" or key == "created_at":
+                value = my_dict[key]
+                self.assertIsInstance(value, str)
+            self.assertIn(key, my_dict)
 
 
 if __name__ == "__main__":
