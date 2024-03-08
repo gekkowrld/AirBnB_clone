@@ -8,9 +8,9 @@ Unittest classes:
     TestBaseModel_to_dict - line 95
 """
 
-from datetime import datetime
 import unittest
 import uuid
+from datetime import datetime
 
 from models.base_model import BaseModel
 
@@ -75,7 +75,7 @@ class TestBaseModel_str(unittest.TestCase):
 
         test_str = "[{}] ({}) {}".format(
             bm1.__class__.__name__, bm1.id, bm1.__dict__
-            )
+        )
         self.assertEqual(bm1.__str__(), test_str)
 
 
@@ -108,8 +108,13 @@ class TestBaseModel_to_dict(unittest.TestCase):
         bm1.my_number = 69
 
         my_list = [
-            "id", "my_number", "__class__", "updated_at", "created_at", "name"
-            ]
+            "id",
+            "my_number",
+            "__class__",
+            "updated_at",
+            "created_at",
+            "name",
+        ]
         my_dict = bm1.to_dict()
 
         for key in my_list:
