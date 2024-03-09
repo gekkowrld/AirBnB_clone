@@ -9,7 +9,6 @@ Unittest classes:
 """
 
 import unittest
-import uuid
 from datetime import datetime
 
 from models.base_model import BaseModel
@@ -124,7 +123,68 @@ class TestBaseModel_to_dict(unittest.TestCase):
                 value = my_dict[key]
                 self.assertIsInstance(value, str)
             self.assertIn(key, my_dict)
+class TestBaseModel_save(unittest.TestCase):
+    """Unittest for save() method of BaseModel"""
 
+    def test_save(self):
+        """Tests whether updated_at works as expected"""
+        bm1 = BaseModel()
+
+        curr_update_time = bm1.updated_at
+        bm1.save()
+
+        self.assertNotEqual(bm1.updated_at, curr_update_time)
+
+
+class TestBaseModel_to_dict(unittest.TestCase):
+    """Unittest for the to_dict() method"""
+
+    def test_to_dict_instance(self):
+        """Test the to_dict method"""
+        bm1 = BaseModel()
+
+        self.assertIsInstance(bm1.__dict__, dict)
+
+    def test_to_dict_values(self):
+        """Test if all the keys are in the dict"""
+        bm1 = BaseModel()
+        bm1.name = "Python"
+        bm1.my_number = 69
+
+        my_list = [
+            "id", "my_number", "__class__", "updated_at", "created_at", "name"
+            ]
+        my_dict = bm1.to_dict()
+
+        for key in my_list:
+            if key == "updated_at" or key == "created_at":
+                value = my_dict[key]
+                self.assertIsInstance(value, str)
+            self.assertIn(key, my_dict)
+
+
+class TestBaseModel_updated_instantiation(unittest.TestCase):
+    """Test the updated instantation using *args and **kwargs"""
+
+    def test_empty_kwargs(self):
+        """Tests when no dict is passed"""
+        bm1 = BaseModel()
+        self.assertTrue(hasattr(bm1, "id"))
+        self.assertTrue(hasattr(bm1, "updated_at"))
+        self.assertTrue(hasattr(bm1, "created_at"))
+
+    def test_with_kwargs(self):
+        """Tests when a dict is passed"""
+        bm1 = BaseModel()
+        bm1.name = "Another"
+        bm1.my_height = 100
+
+        my_dict = bm1.to_dict()
+
+        bm_new = BaseModel(**my_dict)
+        self.assertTrue(hasattr(bm_new, "name"))
+        self.assertTrue(hasattr(bm_new, "my_height"))
+        self.assertFalse(bm1 is bm_new)
 
 if __name__ == "__main__":
     unittest.main()
