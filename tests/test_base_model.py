@@ -188,6 +188,6 @@ class TestBaseModel_updated_instantiation(unittest.TestCase):
         self.assertTrue(hasattr(bm_new, "my_height"))
         self.assertFalse(bm1 is bm_new)
 
-
+        
 if __name__ == "__main__":
     unittest.main()
