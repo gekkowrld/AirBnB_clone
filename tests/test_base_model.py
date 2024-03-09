@@ -123,6 +123,8 @@ class TestBaseModel_to_dict(unittest.TestCase):
                 value = my_dict[key]
                 self.assertIsInstance(value, str)
             self.assertIn(key, my_dict)
+
+
 class TestBaseModel_save(unittest.TestCase):
     """Unittest for save() method of BaseModel"""
 
