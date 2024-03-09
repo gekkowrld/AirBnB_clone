@@ -31,18 +31,26 @@ class BaseModel:
         if kwargs:
             for key, val in kwargs.items():
                 if key == "created_at" or key == "updated_at":
-                    setattr(self, key, datetime.strptime(val, BaseModel.DATE_FMT))
+                    setattr(
+                        self, key, datetime.strptime(val, BaseModel.DATE_FMT)
+                    )
                 elif key != "__class__":
                     setattr(self, key, val)
         else:
+            from models import storage
+
             self.id = str(uid())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
+            storage.new(self)
 
     def save(self):
         """Update the time"""
 
+        from models import storage
+
         self.updated_at = datetime.now()
+        storage.save()
 
     def __str__(self):
         """Change how __str__ method behaves"""
