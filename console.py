@@ -110,15 +110,31 @@ class HBNBCommand(cmd.Cmd):
         Based or not based on class name"""
         from models import storage
 
+        class_list = [
+            "BaseModel",
+            "User",
+            "City",
+            "State",
+            "City",
+            "Amenity",
+            "Place",
+            "Review",
+        ]
+
         my_list = self._split(line)
         my_dict = storage.all()
         new_list = []
+
+        if len(my_list) == 1:
+            if my_list[0] not in class_list:
+                print("** class doesn't exist **")
+                HBNBCommand().cmdloop()
 
         if my_list == [] and len(my_dict) > 0:
             for key in my_dict:
                 obj_dict = my_dict[key].to_dict()
                 print_str = self.handle_print(my_dict[key], obj_dict)
-                new_list.append(print_str)
+                new_list = [print_str] + new_list
             print(new_list)
 
         elif len(my_list) == 1:
@@ -126,7 +142,7 @@ class HBNBCommand(cmd.Cmd):
                 obj_dict = my_dict[key].to_dict()
                 if (obj_dict["__class__"] == my_list[0]):
                     print_str = self.handle_print(my_dict[key], obj_dict)
-                    new_list.append(print_str)
+                    new_list = [print_str] + new_list
             print(new_list)
 
     def handle_print(self, obj, obj_dict):
