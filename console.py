@@ -41,6 +41,8 @@ class HBNBCommand(cmd.Cmd):
         from models.state import State
         from models.user import User
 
+        from models import storage
+
         my_list = self._split(line)
 
         class_map = {
@@ -68,6 +70,7 @@ class HBNBCommand(cmd.Cmd):
                 if class_name in class_map:
                     obj = class_map[class_name]()
                     print(obj.id)
+                    storage.save()
                 else:
                     print("** class doesn't exist **")
                     HBNBCommand().cmdloop()
@@ -104,6 +107,7 @@ class HBNBCommand(cmd.Cmd):
 
         try:
             del my_dict[my_key]
+            storage.save()
         except KeyError:
             print("** no instance found **")
             HBNBCommand().cmdloop()
@@ -155,6 +159,7 @@ class HBNBCommand(cmd.Cmd):
         try:
             obj = my_dict[my_key]
             obj.__dict__[new_list[2]] = new_list[3]
+            storage.save()
         except KeyError:
             print("** no instance found **")
             HBNBCommand().cmdloop()
