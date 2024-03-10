@@ -4,7 +4,7 @@
 from datetime import datetime
 import unittest
 
-from models.City import City
+from models.city import City
 
 
 class TestCity_instantiation(unittest.TestCase):
