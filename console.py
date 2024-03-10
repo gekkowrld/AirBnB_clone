@@ -5,16 +5,6 @@ Script containing the entry point of the command interpreter
 """
 
 import cmd
-import shlex
-
-from models import storage
-from models.amenity import Amenity
-from models.base_model import BaseModel
-from models.city import City
-from models.place import Place
-from models.review import Review
-from models.state import State
-from models.user import User
 
 
 class HBNBCommand(cmd.Cmd):
@@ -43,6 +33,15 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, line):
         """Creates a new instance of BaseModel
         saves it (to the JSON file) and prints the id"""
+        from models import storage
+        from models.amenity import Amenity
+        from models.base_model import BaseModel
+        from models.city import City
+        from models.place import Place
+        from models.review import Review
+        from models.state import State
+        from models.user import User
+
         my_list = self._split(line)
 
         class_map = {
@@ -65,18 +64,20 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
                 HBNBCommand().cmdloop()
 
-            else:
-                for class_name in my_list:
-                    if class_name in class_map:
-                        obj = class_map[class_name]()
-                        print(obj.id)
-                        storage.save()
-                    else:
-                        print("** class doesn't exist **")
-                        HBNBCommand().cmdloop()
+        else:
+            for class_name in my_list:
+                if class_name in class_map:
+                    obj = class_map[class_name]()
+                    print(obj.id)
+                    storage.save()
+                else:
+                    print("** class doesn't exist **")
+                    HBNBCommand().cmdloop()
 
     def do_show(self, line):
         """Prints the string representation of an instance"""
+
+        from models import storage
 
         my_list = self.__check(line)
 
@@ -96,6 +97,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, line):
         """Deletes an instance based on the class name and id"""
+        from models import storage
 
         my_list = self.__check(line)
         my_dict = storage.all()
@@ -112,12 +114,13 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, line):
         """Prints all string representation of all instances
         Based or not based on class name"""
+        from models import storage
 
         my_list = self._split(line)
 
         my_dict = storage.all()
 
-        if not my_list:
+        if my_list == []:
             for key in my_dict:
                 obj_dict = my_dict[key].to_dict()
                 self.handle_print(my_dict[key], obj_dict)
@@ -135,6 +138,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_update(self, line):
         """Updates an instance based on the class name and id"""
+        from models import storage
 
         my_list = self.__check(line)
         my_dict = storage.all()
@@ -163,6 +167,7 @@ class HBNBCommand(cmd.Cmd):
     def _split(line):
         """splits my line using spaces
         Return a dict"""
+        import shlex
 
         return shlex.split(line)
 
