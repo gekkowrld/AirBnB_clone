@@ -16,7 +16,7 @@ class HBNBCommand(cmd.Cmd):
     Our cutom prompt is (hbnb)
     """
 
-    prompt = "(hbnb)"
+    prompt = "(hbnb) "
 
     def do_EOF(self, line):
         """Ctrl-D to exit the program"""
@@ -114,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
         my_dict = storage.all()
         new_list = []
 
-        if my_list == []:
+        if my_list == [] and len(my_dict) > 0:
             for key in my_dict:
                 obj_dict = my_dict[key].to_dict()
                 print_str = self.handle_print(my_dict[key], obj_dict)
