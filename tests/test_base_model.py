@@ -154,8 +154,13 @@ class TestBaseModel_to_dict(unittest.TestCase):
         bm1.my_number = 69
 
         my_list = [
-            "id", "my_number", "__class__", "updated_at", "created_at", "name"
-            ]
+            "id",
+            "my_number",
+            "__class__",
+            "updated_at",
+            "created_at",
+            "name",
+        ]
         my_dict = bm1.to_dict()
 
         for key in my_list:
@@ -188,6 +193,6 @@ class TestBaseModel_updated_instantiation(unittest.TestCase):
         self.assertTrue(hasattr(bm_new, "my_height"))
         self.assertFalse(bm1 is bm_new)
 
-        
+
 if __name__ == "__main__":
     unittest.main()
