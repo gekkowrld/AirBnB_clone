@@ -120,6 +120,7 @@ class HBNBCommand(cmd.Cmd):
                 obj_dict = my_dict[key].to_dict()
                 print_str = self.handle_print(my_dict[key], obj_dict)
                 new_list.append(print_str)
+            print(new_list)
 
         elif len(my_list) == 1:
             for key in my_dict:
@@ -127,8 +128,7 @@ class HBNBCommand(cmd.Cmd):
                 if (obj_dict["__class__"] == my_list[0]):
                     print_str = self.handle_print(my_dict[key], obj_dict)
                     new_list.append(print_str)
-
-        print(new_list)
+            print(new_list)
 
     def handle_print(self, obj, obj_dict):
         """Handles printing the obj"""
