@@ -1,15 +1,17 @@
 #!/usr/bin/python3
 """Unittests for city.py"""
 
-from datetime import datetime
 import unittest
+from datetime import datetime
 
 from models.city import City
 
 
 class TestCity_instantiation(unittest.TestCase):
     """Tests for instantiation"""
+
     def test_id(self):
+        """Test id values"""
         c1 = City()
         c2 = City()
 
@@ -35,6 +37,7 @@ class TestCity_instantiation(unittest.TestCase):
         self.assertIsInstance(c1.created_at, datetime)
 
     def test_state_id(self):
+        """Test the state id of the state"""
         c1 = City()
 
         self.assertIsInstance(c1, City)
@@ -50,7 +53,7 @@ class TestCity_instantiation(unittest.TestCase):
         City_name = "Alaska"
         c1.name = City_name
 
-        stored_City_name = c1.__dict__['name']
+        stored_City_name = c1.__dict__["name"]
 
         self.assertEqual(City_name, stored_City_name)
 
@@ -59,6 +62,7 @@ class TestCity_to_dict(unittest.TestCase):
     """Test to_dict() method in Parent class"""
 
     def check_values(self):
+        """Check the value in the dict"""
         c1 = City()
 
         my_list = [
@@ -72,7 +76,7 @@ class TestCity_to_dict(unittest.TestCase):
         my_dict = c1.to_dict()
 
         for key in my_list:
-            if key == "updated_at" or key == "created_at":
+            if key in {"updated_at", "created_at"}:
                 value = my_dict[key]
                 self.assertIsInstance(value, str)
             self.assertIn(key, my_dict)

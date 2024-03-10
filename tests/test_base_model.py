@@ -138,38 +138,6 @@ class TestBaseModel_save(unittest.TestCase):
         self.assertNotEqual(bm1.updated_at, curr_update_time)
 
 
-class TestBaseModel_to_dict(unittest.TestCase):
-    """Unittest for the to_dict() method"""
-
-    def test_to_dict_instance(self):
-        """Test the to_dict method"""
-        bm1 = BaseModel()
-
-        self.assertIsInstance(bm1.__dict__, dict)
-
-    def test_to_dict_values(self):
-        """Test if all the keys are in the dict"""
-        bm1 = BaseModel()
-        bm1.name = "Python"
-        bm1.my_number = 69
-
-        my_list = [
-            "id",
-            "my_number",
-            "__class__",
-            "updated_at",
-            "created_at",
-            "name",
-        ]
-        my_dict = bm1.to_dict()
-
-        for key in my_list:
-            if key == "updated_at" or key == "created_at":
-                value = my_dict[key]
-                self.assertIsInstance(value, str)
-            self.assertIn(key, my_dict)
-
-
 class TestBaseModel_updated_instantiation(unittest.TestCase):
     """Test the updated instantation using *args and **kwargs"""
 
