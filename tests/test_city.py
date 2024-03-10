@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""Unittests for City.py"""
+"""Unittests for city.py"""
 
 import unittest
 from datetime import datetime
