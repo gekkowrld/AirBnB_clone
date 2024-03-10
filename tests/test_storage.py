@@ -35,6 +35,7 @@ class TestFileStorage_all(unittest.TestCase):
     """Test the all() method"""
 
     def test_key_value(self):
+        """Test key value of all method"""
         bm1 = BaseModel()
         bm2 = BaseModel()
 
@@ -51,6 +52,7 @@ class TestFileStorage_save(unittest.TestCase):
     """Test the save method"""
 
     def test_file_creation(self):
+        """Test for file creation"""
         bm1 = BaseModel()
         bm1_id = bm1.id
 
@@ -69,6 +71,8 @@ class TestFileStorage_save(unittest.TestCase):
         self.assertTrue(hasattr(obj, "age"))
 
     def test_new_obj(self):
+        """Test creation of a new object"""
+
         bm1 = BaseModel()
 
         obj = storage.all()[f"{bm1.__class__.__name__}.{bm1.id}"]
