@@ -42,7 +42,6 @@ class HBNBCommand(cmd.Cmd):
         from models.user import User
 
         from models import storage
-
         my_list = self._split(line)
 
         class_map = {
