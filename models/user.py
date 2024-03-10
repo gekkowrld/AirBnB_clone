@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 
 """ Create a class user
-
 Manage user functions
 """
 
