@@ -36,7 +36,7 @@ class TestUser_instantiation(unittest.TestCase):
         self.assertEqual(stored_email, my_email)
 
     def test_first_name(self):
-        """Test the first name of USer"""
+        """Test the first name of User"""
         u1 = User()
 
         self.assertIsInstance(u1, User)

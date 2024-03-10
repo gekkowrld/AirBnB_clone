@@ -21,6 +21,7 @@ class FileStorage:
     """Store details and read details to JSON file"""
 
     def __init__(self):
+        """Initializes instance attributes"""
         self.__file_path = FileStorage.__generate_filename()
         self.__objects = {}
         self.__cls = {
