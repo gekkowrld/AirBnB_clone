@@ -1,10 +1,10 @@
 #!/usr/bin/python3
-"""Unittests for City.py"""
+"""Unittests for city.py"""
 
 from datetime import datetime
 import unittest
 
-from models.City import City
+from models.city import City
 
 
 class TestCity_instantiation(unittest.TestCase):
@@ -76,6 +76,7 @@ class TestCity_to_dict(unittest.TestCase):
                 value = my_dict[key]
                 self.assertIsInstance(value, str)
             self.assertIn(key, my_dict)
+
 
 if __name__ == "__main__":
     unittest.main()

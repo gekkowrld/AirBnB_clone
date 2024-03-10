@@ -71,5 +71,6 @@ class TestState_to_dict(unittest.TestCase):
                 self.assertIsInstance(value, str)
             self.assertIn(key, my_dict)
 
+
 if __name__ == "__main__":
     unittest.main()
