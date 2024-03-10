@@ -28,6 +28,7 @@ class BaseModel:
     DATE_FMT = "%Y-%m-%dT%H:%M:%S.%f"
 
     def __init__(self, *args, **kwargs):
+        """Initializes the instance attributes"""
         from models import storage
 
         if kwargs:

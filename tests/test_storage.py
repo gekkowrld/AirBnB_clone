@@ -85,9 +85,5 @@ class TestFileStorage_save(unittest.TestCase):
         self.assertEqual(bm1.id, bm2.id)
 
 
-class TestFileStorage_reload(unittest.TestCase):
-    """Test the reload method"""
-
-
 if __name__ == "__main__":
     unittest.main()

@@ -66,6 +66,7 @@ class TestReview_to_dict(unittest.TestCase):
     """Test to_dict() method in Parent class"""
 
     def check_values(self):
+        """Checks the key, value pair of dict returned by to_dict()"""
         c1 = Review()
 
         my_list = [

@@ -9,7 +9,9 @@ from models.amenity import Amenity
 
 class TestAmenity_instantiation(unittest.TestCase):
     """Test for instantation"""
+
     def test_id(self):
+        """Tests for attr id"""
         a1 = Amenity()
         a2 = Amenity()
 
@@ -52,6 +54,7 @@ class TestAmenity_to_dict(unittest.TestCase):
     """Test to_dict() method in Parent class"""
 
     def check_values(self):
+        """Checks the key, value pair of dict returned by to_dict()"""
         c1 = Amenity()
 
         my_list = [

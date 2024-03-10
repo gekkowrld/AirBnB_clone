@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 """
 Script containing the entry point of the command interpreter
 """

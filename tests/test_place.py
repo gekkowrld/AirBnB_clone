@@ -9,7 +9,9 @@ from models.place import Place
 
 class TestPlace_instantiation(unittest.TestCase):
     """Test for instantation"""
+
     def test_id(self):
+        """Tests the id"""
         p1 = Place()
         p2 = Place()
 
@@ -151,6 +153,7 @@ class TestPlace_to_dict(unittest.TestCase):
     """Test to_dict() method in Parent class"""
 
     def check_values(self):
+        """Check the key value pair return by to_dict()"""
         c1 = Place()
 
         my_list = [
