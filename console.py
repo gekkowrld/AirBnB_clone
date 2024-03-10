@@ -33,6 +33,7 @@ class HBNBCommand(cmd.Cmd):
     def do_create(self, line):
         """Creates a new instance of BaseModel
         saves it (to the JSON file) and prints the id"""
+        from models import storage
         from models.amenity import Amenity
         from models.base_model import BaseModel
         from models.city import City
@@ -41,34 +42,37 @@ class HBNBCommand(cmd.Cmd):
         from models.state import State
         from models.user import User
 
-        from models import storage
         my_list = self._split(line)
 
         class_map = {
-                "BaseModel": BaseModel,
-                "User": User,
-                "City": City,
-                "State": State,
-                "City": City,
-                "Amenity": Amenity,
-                "Place": Place,
-                "Review": Review,
-            }
+            "BaseModel": BaseModel,
+            "User": User,
+            "City": City,
+            "State": State,
+            "City": City,
+            "Amenity": Amenity,
+            "Place": Place,
+            "Review": Review,
+        }
 
         if len(my_list) < 1:
             print("** class name missing **")
             HBNBCommand().cmdloop()
 
-        if (my_list[0] not in class_map):
-            print("** class doesn't exist **")
-            HBNBCommand().cmdloop()
+        for item in my_list:
+            if item not in class_map:
+                print("** class doesn't exist **")
+                HBNBCommand().cmdloop()
 
-
-        for class_name in class_map:
-            if class_name == my_list[0]:
-                obj = class_map[class_name]()
-                print(obj.id)
-                storage.save()
+        else:
+            for class_name in my_list:
+                if class_name in class_map:
+                    obj = class_map[class_name]()
+                    print(obj.id)
+                    storage.save()
+                else:
+                    print("** class doesn't exist **")
+                    HBNBCommand().cmdloop()
 
     def do_show(self, line):
         """Prints the string representation of an instance"""
@@ -113,27 +117,24 @@ class HBNBCommand(cmd.Cmd):
         from models import storage
 
         my_list = self._split(line)
+
         my_dict = storage.all()
-        new_list = []
 
         if my_list == []:
             for key in my_dict:
                 obj_dict = my_dict[key].to_dict()
-                print_str = self.handle_print(my_dict[key], obj_dict)
-                new_list.append(print_str)
+                self.handle_print(my_dict[key], obj_dict)
 
-        elif len(my_list) == 1:
-            for key in my_dict:
-                obj_dict = my_dict[key].to_dict()
-                if (obj_dict["__class__"] == my_list[0]):
-                    print_str = self.handle_print(my_dict[key], obj_dict)
-                    new_list.append(print_str)
-
-        print(new_list)
+        elif len(my_list) >= 1:
+            for i in range(0, len(my_list)):
+                for key in my_dict:
+                    obj_dict = my_dict[key].to_dict()
+                    if obj_dict["__class__"] == my_list[i]:
+                        self.handle_print(my_dict[key], obj_dict)
 
     def handle_print(self, obj, obj_dict):
         """Handles printing the obj"""
-        return (f"[{obj_dict['__class__']}] ({obj_dict['id']}) {obj.__dict__}")
+        print(f"[{obj_dict['__class__']}] ({obj_dict['id']}) {obj.__dict__}")
 
     def do_update(self, line):
         """Updates an instance based on the class name and id"""
@@ -142,17 +143,17 @@ class HBNBCommand(cmd.Cmd):
         my_list = self.__check(line)
         my_dict = storage.all()
 
-        if (len(my_list) == 2):
+        if len(my_list) == 2:
             print("** attribute name missing **")
             HBNBCommand().cmdloop()
 
-        elif (len(my_list) == 3):
+        elif len(my_list) == 3:
             print("** value missing **")
             HBNBCommand().cmdloop()
 
         new_list = my_list[:4]
 
-        my_key = f'{new_list[0]}.{new_list[1]}'
+        my_key = f"{new_list[0]}.{new_list[1]}"
 
         try:
             obj = my_dict[my_key]
@@ -181,7 +182,7 @@ class HBNBCommand(cmd.Cmd):
             "City",
             "Amenity",
             "Place",
-            "Review"
+            "Review",
         ]
 
         my_list = self._split(line)
@@ -201,5 +202,5 @@ class HBNBCommand(cmd.Cmd):
         return my_list
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     HBNBCommand().cmdloop()

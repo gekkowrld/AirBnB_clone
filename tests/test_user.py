@@ -8,7 +8,9 @@ from models.user import User
 
 class TestUser_instantiation(unittest.TestCase):
     """Tests for instantiation"""
+
     def test_id(self):
+        """Test id of the User"""
         u1 = User()
         u2 = User()
 
@@ -18,6 +20,7 @@ class TestUser_instantiation(unittest.TestCase):
         self.assertIsInstance(u1.id, str)
 
     def test_email(self):
+        """Test the email of User"""
         u1 = User()
 
         self.assertIsInstance(u1, User)
@@ -28,11 +31,12 @@ class TestUser_instantiation(unittest.TestCase):
 
         u1.email = my_email
 
-        stored_email = u1.to_dict()['email']
+        stored_email = u1.to_dict()["email"]
 
         self.assertEqual(stored_email, my_email)
 
     def test_first_name(self):
+        """Test the first name of USer"""
         u1 = User()
 
         self.assertIsInstance(u1, User)
@@ -42,7 +46,7 @@ class TestUser_instantiation(unittest.TestCase):
         my_name = "John"
         u1.first_name = my_name
 
-        u1_first_name = u1.to_dict()['first_name']
+        u1_first_name = u1.to_dict()["first_name"]
 
         self.assertEqual(u1_first_name, my_name)
 
@@ -57,7 +61,7 @@ class TestUser_instantiation(unittest.TestCase):
         my_name = "John"
         u1.last_name = my_name
 
-        u1_last_name = u1.to_dict()['last_name']
+        u1_last_name = u1.to_dict()["last_name"]
 
         self.assertEqual(u1_last_name, my_name)
 
@@ -72,7 +76,7 @@ class TestUser_instantiation(unittest.TestCase):
         my_password = "Hq123U"
         u1.password = my_password
 
-        u1_password = u1.to_dict()['password']
+        u1_password = u1.to_dict()["password"]
 
         self.assertEqual(u1_password, my_password)
 
@@ -81,6 +85,7 @@ class TestUser_to_dict(unittest.TestCase):
     """Test to_dict() method in Parent class"""
 
     def check_values(self):
+        """Check the values in the dict"""
         u1 = User()
 
         my_list = [
@@ -92,15 +97,16 @@ class TestUser_to_dict(unittest.TestCase):
             "email",
             "password",
             "first_name",
-            "last_name"
+            "last_name",
         ]
         my_dict = u1.to_dict()
 
         for key in my_list:
-            if key == "updated_at" or key == "created_at":
+            if key in {"updated_at", "created_at"}:
                 value = my_dict[key]
                 self.assertIsInstance(value, str)
             self.assertIn(key, my_dict)
+
 
 if __name__ == "__main__":
     unittest.main()
