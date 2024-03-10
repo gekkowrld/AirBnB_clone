@@ -5,6 +5,8 @@
 The data is written from a file then subsequently written to a file
 """
 import json
+from getpass import getuser as gu
+from os import path
 
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -40,8 +42,6 @@ class FileStorage:
 
         # Try and get the username
         try:
-            from getpass import getuser as gu
-
             username = "".join(gu().split())  # Remove spaces
         except EnvironmentError:
             pass
@@ -79,10 +79,6 @@ class FileStorage:
         After reading, load __objects with the information
         Only do so if the file exists, else do nothing
         """
-
-        from os import path
-
-        from models.base_model import BaseModel
 
         if path.exists(self.__file_path):
             try:

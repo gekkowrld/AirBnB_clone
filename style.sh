@@ -1,7 +1,19 @@
 #!/usr/bin/env bash
 
 # Collect all Python files in the current directory and its siblings
-STYLE_FILES=$(find . -name "*.py")
+STYLE_FILES=
+if [ "$#" -ge 1 ]; then
+    INPUT="$1"
+    # Check if the input is a file
+    if [ -f "$INPUT" ];then
+        STYLE_FILES=$INPUT
+    else
+         # Check for the py files in the directory instead
+         STYLE_FILES=$(find $INPUT -name "*.py")
+     fi
+else
+    STYLE_FILES=$(find . -name "*.py")
+fi
 
 # First change tabs (if available) to spaces
 echo "Converting tabs to spaces..."

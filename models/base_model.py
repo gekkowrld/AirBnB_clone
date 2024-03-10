@@ -17,6 +17,8 @@ The class has the following instances by default:
 from datetime import datetime
 from uuid import uuid4 as uid
 
+from models import storage
+
 
 class BaseModel:
     """Base Model
@@ -30,15 +32,13 @@ class BaseModel:
     def __init__(self, *args, **kwargs):
         if kwargs:
             for key, val in kwargs.items():
-                if key == "created_at" or key == "updated_at":
+                if key in {"created_at", "updated_at"}:
                     setattr(
                         self, key, datetime.strptime(val, BaseModel.DATE_FMT)
                     )
                 elif key != "__class__":
                     setattr(self, key, val)
         else:
-            from models import storage
-
             self.id = str(uid())
             self.created_at = datetime.now()
             self.updated_at = self.created_at
@@ -46,8 +46,6 @@ class BaseModel:
 
     def save(self):
         """Update the time"""
-
-        from models import storage
 
         self.updated_at = datetime.now()
         storage.save()
@@ -64,7 +62,7 @@ class BaseModel:
 
         for obj_key, obj_val in self.__dict__.items():
             # Change the time to a 'str' in a special way
-            if obj_key == "updated_at" or obj_key == "created_at":
+            if obj_key in {"updated_at", "created_at"}:
                 dict_obj[obj_key] = obj_val.isoformat()
             else:
                 dict_obj[obj_key] = obj_val
