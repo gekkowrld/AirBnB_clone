@@ -17,8 +17,6 @@ The class has the following instances by default:
 from datetime import datetime
 from uuid import uuid4 as uid
 
-from models import storage
-
 
 class BaseModel:
     """Base Model
@@ -30,6 +28,8 @@ class BaseModel:
     DATE_FMT = "%Y-%m-%dT%H:%M:%S.%f"
 
     def __init__(self, *args, **kwargs):
+        from models import storage
+
         if kwargs:
             for key, val in kwargs.items():
                 if key in {"created_at", "updated_at"}:
@@ -46,6 +46,7 @@ class BaseModel:
 
     def save(self):
         """Update the time"""
+        from models import storage
 
         self.updated_at = datetime.now()
         storage.save()
