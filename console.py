@@ -60,20 +60,16 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
             HBNBCommand().cmdloop()
 
-        for item in my_list:
-            if (item not in class_map):
-                print("** class doesn't exist **")
-                HBNBCommand().cmdloop()
+        if (my_list[0] not in class_map):
+            print("** class doesn't exist **")
+            HBNBCommand().cmdloop()
 
-        else:
-            for class_name in my_list:
-                if class_name in class_map:
-                    obj = class_map[class_name]()
-                    print(obj.id)
-                    storage.save()
-                else:
-                    print("** class doesn't exist **")
-                    HBNBCommand().cmdloop()
+
+        for class_name in class_map:
+            if class_name == my_list[0]:
+                obj = class_map[class_name]()
+                print(obj.id)
+                storage.save()
 
     def do_show(self, line):
         """Prints the string representation of an instance"""
@@ -118,24 +114,27 @@ class HBNBCommand(cmd.Cmd):
         from models import storage
 
         my_list = self._split(line)
-
         my_dict = storage.all()
+        new_list = []
 
         if my_list == []:
             for key in my_dict:
                 obj_dict = my_dict[key].to_dict()
-                self.handle_print(my_dict[key], obj_dict)
+                print_str = self.handle_print(my_dict[key], obj_dict)
+                new_list.append(print_str)
 
-        elif len(my_list) >= 1:
-            for i in range(0, len(my_list)):
-                for key in my_dict:
-                    obj_dict = my_dict[key].to_dict()
-                    if (obj_dict["__class__"] == my_list[i]):
-                        self.handle_print(my_dict[key], obj_dict)
+        elif len(my_list) == 1:
+            for key in my_dict:
+                obj_dict = my_dict[key].to_dict()
+                if (obj_dict["__class__"] == my_list[0]):
+                    print_str = self.handle_print(my_dict[key], obj_dict)
+                    new_list.append(print_str)
+
+        print(new_list)
 
     def handle_print(self, obj, obj_dict):
         """Handles printing the obj"""
-        print(f"[{obj_dict['__class__']}] ({obj_dict['id']}) {obj.__dict__}")
+        return (f"[{obj_dict['__class__']}] ({obj_dict['id']}) {obj.__dict__}")
 
     def do_update(self, line):
         """Updates an instance based on the class name and id"""
