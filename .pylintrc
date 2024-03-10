@@ -80,3 +80,4 @@ disable=
     invalid-name,
     bad-whitespace,
     consider-using-enumerate
+    unnecessary-dunder-call
