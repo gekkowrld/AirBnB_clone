@@ -1,8 +1,18 @@
+#!/usr/bin/python3
+
 """Serialize and deserialize the data
 
 The data is written from a file then subsequently written to a file
 """
 import json
+
+from models.amenity import Amenity
+from models.base_model import BaseModel
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
 
 
 class FileStorage:
@@ -11,6 +21,15 @@ class FileStorage:
     def __init__(self):
         self.__file_path = FileStorage.__generate_filename()
         self.__objects = {}
+        self.__cls = {
+            "BaseModel": BaseModel,
+            "User": User,
+            "Place": Place,
+            "Review": Review,
+            "Amenity": Amenity,
+            "City": City,
+            "State": State,
+        }
 
     @staticmethod
     def __generate_filename():
@@ -70,6 +89,7 @@ class FileStorage:
                 with open(self.__file_path, "r", encoding="UTF-8") as fr:
                     fc = json.loads(fr.read())
                     for key, val in fc.items():
-                        self.__objects[key] = BaseModel(**val)
+                        obj = self.__cls[val["__class__"]](**val)
+                        self.__objects[key] = obj
             except json.JSONDecodeError:
                 pass

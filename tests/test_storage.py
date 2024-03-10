@@ -10,8 +10,8 @@ Unittest classes:
 
 import unittest
 
-from models.base_model import BaseModel
 from models import storage
+from models.base_model import BaseModel
 
 
 class TestFileStorage_instantiation(unittest.TestCase):
@@ -25,8 +25,8 @@ class TestFileStorage_instantiation(unittest.TestCase):
         my_dict = storage.all()
         self.assertIsInstance(my_dict, dict)
 
-        obj = my_dict[f'{bm1.__class__.__name__}.{bm1_id}']
-        stored_id = obj.to_dict()['id']
+        obj = my_dict[f"{bm1.__class__.__name__}.{bm1_id}"]
+        stored_id = obj.to_dict()["id"]
 
         self.assertEqual(stored_id, bm1_id)
 
@@ -35,17 +35,16 @@ class TestFileStorage_all(unittest.TestCase):
     """Test the all() method"""
 
     def test_key_value(self):
-
         bm1 = BaseModel()
         bm2 = BaseModel()
 
         my_dict = storage.all()
 
         for key, value in my_dict.items():
-            my_list = key.split('.')
+            my_list = key.split(".")
             self.assertEqual(my_list[0], value.__class__.__name__)
             obj_dict = value.to_dict()
-            self.assertEqual(my_list[1], obj_dict['id'])
+            self.assertEqual(my_list[1], obj_dict["id"])
 
 
 class TestFileStorage_save(unittest.TestCase):
@@ -58,21 +57,21 @@ class TestFileStorage_save(unittest.TestCase):
         bm1.save()
 
         my_objs = storage.all()
-        obj = my_objs[f'{bm1.__class__.__name__}.{bm1_id}']
+        obj = my_objs[f"{bm1.__class__.__name__}.{bm1_id}"]
         self.assertIsInstance(obj, BaseModel)
 
-        self.assertEqual(obj.to_dict()['id'], bm1_id)
+        self.assertEqual(obj.to_dict()["id"], bm1_id)
 
         bm1.age = 62
         my_objs = storage.all()
-        obj = my_objs[f'{bm1.__class__.__name__}.{bm1_id}']
+        obj = my_objs[f"{bm1.__class__.__name__}.{bm1_id}"]
 
-        self.assertTrue(hasattr(obj, 'age'))
+        self.assertTrue(hasattr(obj, "age"))
 
     def test_new_obj(self):
         bm1 = BaseModel()
 
-        obj = storage.all()[f'{bm1.__class__.__name__}.{bm1.id}']
+        obj = storage.all()[f"{bm1.__class__.__name__}.{bm1.id}"]
 
         values = obj.to_dict()
 
