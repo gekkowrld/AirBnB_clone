@@ -10,79 +10,246 @@ Unittest classes:
 
 import unittest
 
-from models import storage
+from models.engine.file_storage import FileStorage
 from models.base_model import BaseModel
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
+from models.amenity import Amenity
 
 
 class TestFileStorage_instantiation(unittest.TestCase):
     """Tests methods created in the FileStorage class"""
 
-    def test_new(self):
-        """Test whether an instance is added to objects dict"""
-        bm1 = BaseModel()
-        bm1_id = bm1.id
+    def test_file_path(self):
+        """Test the class attr __file_path"""
+        f1 = FileStorage()
+        self.assertIsInstance(f1, FileStorage)
+        self.assertIsNotNone(f1._FileStorage__file_path)
+        self.assertIsInstance(f1._FileStorage__file_path, str)
 
-        my_dict = storage.all()
-        self.assertIsInstance(my_dict, dict)
+    def test_object(self):
+        """Test the class attr __objects"""
+        import os
 
-        obj = my_dict[f"{bm1.__class__.__name__}.{bm1_id}"]
-        stored_id = obj.to_dict()["id"]
+        f1 = FileStorage()
 
-        self.assertEqual(stored_id, bm1_id)
+        if os.path.exists(f1._FileStorage__file_path):
+            os.remove(f1._FileStorage__file_path)
+
+        self.assertIsInstance(f1, FileStorage)
+        self.assertIsInstance(f1._FileStorage__objects, dict)
+        self.assertEqual(f1._FileStorage__objects, {})
+
+        b1 = BaseModel()
+
+        f1.new(b1)
+
+        self.assertNotEqual(f1._FileStorage__objects, {})
+        self.assertIsInstance(f1._FileStorage__objects, dict)
 
 
 class TestFileStorage_all(unittest.TestCase):
-    """Test the all() method"""
+    """Test the method all()"""
 
-    def test_key_value(self):
-        """Test key value of all method"""
-        bm1 = BaseModel()
-        bm2 = BaseModel()
+    def test_empty_objects(self):
+        """Tests case when no self.__objects is empty"""
+        import os
 
-        my_dict = storage.all()
+        f1 = FileStorage()
 
-        for key, value in my_dict.items():
-            my_list = key.split(".")
-            self.assertEqual(my_list[0], value.__class__.__name__)
-            obj_dict = value.to_dict()
-            self.assertEqual(my_list[1], obj_dict["id"])
+        if os.path.exists(f1._FileStorage__file_path):
+            os.remove(f1._FileStorage__file_path)
+
+        my_dict = f1.all()
+
+        self.assertIsInstance(f1, FileStorage)
+        self.assertIsInstance(my_dict, dict)
+        self.assertEqual(my_dict, {})
+
+    def test_non_empty_objects(self):
+        """Tests case when self.__objects is not empty"""
+        f1 = FileStorage()
+
+        b1 = BaseModel()
+
+        b1_key = f'{b1.__class__.__name__}.{b1.id}'
+
+        f1.new(b1)
+
+        my_dict = f1.all()
+
+        self.assertNotEqual(my_dict, {})
+        self.assertIn(b1_key, my_dict)
+        self.assertEqual(b1, my_dict[b1_key])
+
+class TestFileStorage_new(unittest.TestCase):
+    """Test the new method"""
+
+    def test_BaseModel(self):
+        """Test whether an obj is added"""
+        f1 = FileStorage()
+
+        b1 = BaseModel()
+
+        b1_key = f'{b1.__class__.__name__}.{b1.id}'
+
+        f1.new(b1)
+
+        my_dict = f1.all()
+
+        self.assertNotEqual(my_dict, {})
+        self.assertIn(b1_key, my_dict)
+        self.assertEqual(b1, my_dict[b1_key])
+
+    def test_Amenity(self):
+        """Test whether an Amenity instance is added"""
+        f1 = FileStorage()
+
+        a1 = Amenity()
+
+        a1_key = f'{a1.__class__.__name__}.{a1.id}'
+
+        f1.new(a1)
+
+        my_dict = f1.all()
+
+        self.assertNotEqual(my_dict, {})
+        self.assertIn(a1_key, my_dict)
+        self.assertEqual(a1, my_dict[a1_key])
+
+    def test_State(self):
+        """Test whether an obj is added"""
+        f1 = FileStorage()
+
+        s1 = State()
+
+        s1_key = f'{s1.__class__.__name__}.{s1.id}'
+
+        f1.new(s1)
+
+        my_dict = f1.all()
+
+        self.assertNotEqual(my_dict, {})
+        self.assertIn(s1_key, my_dict)
+        self.assertEqual(s1, my_dict[s1_key])
+
+    def test_User(self):
+        """Test whether a User instance is added"""
+        f1 = FileStorage()
+
+        u1 = User()
+
+        u1_key = f'{u1.__class__.__name__}.{u1.id}'
+
+        f1.new(u1)
+
+        my_dict = f1.all()
+
+        self.assertNotEqual(my_dict, {})
+        self.assertIn(u1_key, my_dict)
+        self.assertEqual(u1, my_dict[u1_key])
+
+    def test_City(self):
+        """Test whether City Instance is added"""
+        f1 = FileStorage()
+        c1 = City()
+
+        c1_key = f'{c1.__class__.__name__}.{c1.id}'
+
+        f1.new(c1)
+
+        my_dict = f1.all()
+
+        self.assertNotEqual(my_dict, {})
+        self.assertIn(c1_key, my_dict)
+        self.assertEqual(c1, my_dict[c1_key])
+
+    def test_Review(self):
+        """Test whether City Instance is added"""
+        f1 = FileStorage()
+        r1 = Review()
+
+        r1_key = f'{r1.__class__.__name__}.{r1.id}'
+
+        f1.new(r1)
+
+        my_dict = f1.all()
+
+        self.assertNotEqual(my_dict, {})
+        self.assertIn(r1_key, my_dict)
+        self.assertEqual(r1, my_dict[r1_key])
+
+    def test_Place(self):
+        """Test whether Place Instance is added"""
+        f1 = FileStorage()
+        p1 = Place()
+
+        p1_key = f'{p1.__class__.__name__}.{p1.id}'
+
+        f1.new(p1)
+
+        my_dict = f1.all()
+
+        self.assertNotEqual(my_dict, {})
+        self.assertIn(p1_key, my_dict)
+        self.assertEqual(p1, my_dict[p1_key])
 
 
 class TestFileStorage_save(unittest.TestCase):
-    """Test the save method"""
+    """Tests the save method"""
 
-    def test_file_creation(self):
-        """Test for file creation"""
-        bm1 = BaseModel()
-        bm1_id = bm1.id
+    def test_file_content(self):
+        """Tests the content of our file"""
+        import os, json
 
-        bm1.save()
+        f1 = FileStorage()
 
-        my_objs = storage.all()
-        obj = my_objs[f"{bm1.__class__.__name__}.{bm1_id}"]
-        self.assertIsInstance(obj, BaseModel)
+        if os.path.exists(f1._FileStorage__file_path):
+            os.remove(f1._FileStorage__file_path)
 
-        self.assertEqual(obj.to_dict()["id"], bm1_id)
+        b1 = BaseModel()
+        u1 = User()
 
-        bm1.age = 62
-        my_objs = storage.all()
-        obj = my_objs[f"{bm1.__class__.__name__}.{bm1_id}"]
+        f1.new(b1)
+        f1.new(u1)
 
-        self.assertTrue(hasattr(obj, "age"))
+        f1.save()
 
-    def test_new_obj(self):
-        """Test creation of a new object"""
+        with open(f1._FileStorage__file_path, "r", encoding="UTF-8") as fo:
+            content = fo.read()
 
-        bm1 = BaseModel()
+        self.assertIsInstance(content, str)
 
-        obj = storage.all()[f"{bm1.__class__.__name__}.{bm1.id}"]
+        obj_dict = json.loads(content)
 
-        values = obj.to_dict()
+        self.assertIsInstance(obj_dict, dict)
 
-        bm2 = BaseModel(**values)
+        b1_key = f'{b1.__class__.__name__}.{b1.id}'
+        u1_key = f'{u1.__class__.__name__}.{u1.id}'
 
-        self.assertFalse(bm1 is bm2)
-        self.assertEqual(bm1.id, bm2.id)
+        self.assertIn(b1_key, obj_dict)
+        self.assertIn(u1_key, obj_dict)
+
+class TestFileStorage_reload(unittest.TestCase):
+    """Tests the reload method"""
+
+    def test_reload_file_exists(self):
+        """Test if obj is created from file when file exists"""
+        import os
+
+        if os.path.exists(FileStorage()._FileStorage__file_path):
+            os.remove(FileStorage()._FileStorage__file_path)
+
+        content = '{"BaseModel.15495279-5c36-40ee-b8a5-1a7bf333e8d8": '\
+            '{"id": "15495279-5c36-40ee-b8a5-1a7bf333e8d8", "created_at": "2024-03-11T18:08:11.572045", '\
+            '"updated_at": "2024-03-11T18:08:11.572045", "__class__": "BaseModel"} '
+        key = "BaseModel.15495279-5c36-40ee-b8a5-1a7bf333e8d8"
+
+        with open(FileStorage()._FileStorage__file_path, "w", encoding="UTF-8") as fo:
+            fo.write(content)
 
 
 if __name__ == "__main__":
