@@ -30,6 +30,13 @@ class TestFileStorage_instantiation(unittest.TestCase):
         self.assertIsNotNone(f1._FileStorage__file_path)
         self.assertIsInstance(f1._FileStorage__file_path, str)
 
+    def test_file_path_if_private(self):
+        """Checks whether the __file_path attr is private"""
+        f1 = FileStorage()
+
+        self.assertIsInstance(f1, FileStorage)
+        self.assertFalse(hasattr(f1, "__file_path"))
+
     def test_object(self):
         """Test the class attr __objects"""
         import os
@@ -49,6 +56,13 @@ class TestFileStorage_instantiation(unittest.TestCase):
 
         self.assertNotEqual(f1._FileStorage__objects, {})
         self.assertIsInstance(f1._FileStorage__objects, dict)
+
+    def test_objects_if_private(self):
+        """Checks whether the __objects attr is private"""
+        f1 = FileStorage()
+
+        self.assertIsInstance(f1, FileStorage)
+        self.assertFalse(hasattr(f1, "__objects"))
 
 
 class TestFileStorage_all(unittest.TestCase):
