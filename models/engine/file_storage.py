@@ -5,7 +5,6 @@
 The data is written from a file then subsequently written to a file
 """
 import json
-from getpass import getuser as gu
 from os import path
 
 from models.amenity import Amenity
@@ -22,7 +21,7 @@ class FileStorage:
 
     def __init__(self):
         """Initializes instance attributes"""
-        self.__file_path = FileStorage.__generate_filename()
+        self.__file_path = "file.json"
         self.__objects = {}
         self.__cls = {
             "BaseModel": BaseModel,
@@ -33,24 +32,6 @@ class FileStorage:
             "City": City,
             "State": State,
         }
-
-    @staticmethod
-    def __generate_filename():
-        """Generate unique but permanent filename"""
-
-        filename = "file"  # Default filename
-        username = "username"
-
-        # Try and get the username
-        try:
-            username = "".join(gu().split())  # Remove spaces
-        except EnvironmentError:
-            pass
-
-        # Join the filename and username
-        filename = f"{filename}_{username}"
-
-        return f"{filename}.json"
 
     def all(self):
         """Return most of the objects"""
