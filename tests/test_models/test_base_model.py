@@ -12,6 +12,7 @@ import unittest
 from datetime import datetime
 
 from models.base_model import BaseModel
+from models.engine.file_storage import FileStorage
 
 
 class TestBaseModel_instantiation(unittest.TestCase):
@@ -136,6 +137,18 @@ class TestBaseModel_save(unittest.TestCase):
         bm1.save()
 
         self.assertNotEqual(bm1.updated_at, curr_update_time)
+
+    def test_file_creation(self):
+        """Tests whether the file is created"""
+        import os
+
+        if os.path.exists(FileStorage()._FileStorage__file_path):
+            os.remove(FileStorage()._FileStorage__file_path)
+
+        bm1 = BaseModel()
+        bm1.save()
+
+        self.assertTrue(os.path.exists(FileStorage()._FileStorage__file_path))
 
 
 class TestBaseModel_updated_instantiation(unittest.TestCase):
