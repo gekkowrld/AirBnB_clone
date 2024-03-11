@@ -1,14 +1,15 @@
 #!/usr/bin/python3
 """Unittests for review.py"""
 
-from datetime import datetime
 import unittest
+from datetime import datetime
 
 from models.review import Review
 
 
 class TestReview_instantiation(unittest.TestCase):
     """Test for instantation"""
+
     def test_id(self):
         r1 = Review()
         r2 = Review()

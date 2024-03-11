@@ -1,8 +1,8 @@
 #!/usr/bin/python3
 """Unittests for amenity.py"""
 
-from datetime import datetime
 import unittest
+from datetime import datetime
 
 from models.amenity import Amenity
 

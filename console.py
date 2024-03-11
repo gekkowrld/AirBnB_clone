@@ -138,14 +138,14 @@ class HBNBCommand(cmd.Cmd):
         elif len(my_list) == 1:
             for key in my_dict:
                 obj_dict = my_dict[key].to_dict()
-                if (obj_dict["__class__"] == my_list[0]):
+                if obj_dict["__class__"] == my_list[0]:
                     print_str = self.handle_print(my_dict[key], obj_dict)
                     new_list = [print_str] + new_list
             print(new_list)
 
     def handle_print(self, obj, obj_dict):
         """Handles printing the obj"""
-        return (f"[{obj_dict['__class__']}] ({obj_dict['id']}) {obj.__dict__}")
+        return f"[{obj_dict['__class__']}] ({obj_dict['id']}) {obj.__dict__}"
 
     def do_update(self, line):
         """Updates an instance based on the class name and id"""
