@@ -45,9 +45,9 @@ class TestAmenity_instantiation(unittest.TestCase):
         self.assertIsInstance(a1.name, str)
         self.assertEqual(a1.name, "")
 
-        a1.name = "Nairobi"
+        a1.name = "Spa"
 
-        self.assertEqual(a1.name, "Nairobi")
+        self.assertEqual(a1.name, "Spa")
 
 
 class TestAmenity_to_dict(unittest.TestCase):

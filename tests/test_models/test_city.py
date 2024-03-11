@@ -49,13 +49,12 @@ class TestCity_instantiation(unittest.TestCase):
 
         self.assertIsInstance(c1, City)
         self.assertTrue(hasattr(c1, "name"))
+        self.assertIsInstance(c1.name, str)
+        self.assertEqual(c1.name, "")
 
-        City_name = "Alaska"
-        c1.name = City_name
+        c1.name = "Nairobi"
 
-        stored_City_name = c1.__dict__["name"]
-
-        self.assertEqual(City_name, stored_City_name)
+        self.assertEqual(c1.name, "Nairobi")
 
 
 class TestCity_to_dict(unittest.TestCase):

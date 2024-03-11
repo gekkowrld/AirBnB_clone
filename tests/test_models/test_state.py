@@ -42,13 +42,12 @@ class TestState_instantiation(unittest.TestCase):
 
         self.assertIsInstance(s1, State)
         self.assertTrue(hasattr(s1, "name"))
+        self.assertIsInstance(s1.name, str)
+        self.assertEqual(s1.name, "")
 
-        state_name = "Alaska"
-        s1.name = state_name
+        s1.name = "Alaska"
 
-        stored_state_name = s1.__dict__["name"]
-
-        self.assertEqual(state_name, stored_state_name)
+        self.assertEqual(s1.name, "Alaska")
 
 
 class TestState_to_dict(unittest.TestCase):
