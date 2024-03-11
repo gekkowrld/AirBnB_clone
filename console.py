@@ -172,6 +172,57 @@ class HBNBCommand(cmd.Cmd):
                 except KeyError:
                     print("** no instance found **")
 
+    def default(self, line):
+        """Handles other commands"""
+
+        import json
+
+        from models import storage
+
+        my_list = line.split('.')
+        if my_list[1] == "all()":
+            self.do_all(my_list[0])
+
+        elif my_list[1] == "count()":
+            count = 0
+            my_dict = storage.all()
+            for key, value in my_dict.items():
+                if value.to_dict()["__class__"] == my_list[0]:
+                    count += 1
+            print(count)
+
+        elif my_list[1][:4] == "show":
+            stop = len(my_list[1]) - 1
+            key = my_list[1][5:stop]
+            self.do_show(f"{my_list[0]} {key}")
+
+        elif my_list[1][:7] == "destroy":
+            stop = len(my_list[1]) - 1
+            key = my_list[1][8:stop]
+            self.do_destroy(f"{my_list[0]} {key}")
+
+        elif my_list[1][:6] == "update":
+            stop = len(my_list[1]) - 1
+
+            values = my_list[1][7:stop]
+
+            new_list = values.split(",")
+
+            len_id = len(new_list[0])
+
+            update_values = values[len_id + 2:stop]
+
+            if update_values[0] != '{':
+                str_values = "".join(item for item in new_list)
+                self.do_update(f"{my_list[0]} {str_values}")
+
+            elif update_values[0] == '{':
+                my_dict = json.loads(update_values.replace("'", '"'))
+
+                for key, value in my_dict.items():
+                    print(f"{my_list[0]} {new_list[0]} {key} {value}")
+                    self.do_update(f"{my_list[0]} {new_list[0]} {key} {value}")
+
     @staticmethod
     def _split(line):
         """splits my line using spaces

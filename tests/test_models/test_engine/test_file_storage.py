@@ -262,6 +262,8 @@ class TestFileStorage_reload(unittest.TestCase):
         """Test if obj is created from file when file exists"""
         import os
 
+        f1 = FileStorage()
+
         if os.path.exists(FileStorage()._FileStorage__file_path):
             os.remove(FileStorage()._FileStorage__file_path)
 
@@ -272,6 +274,10 @@ class TestFileStorage_reload(unittest.TestCase):
 
         with open(FileStorage()._FileStorage__file_path, "w", encoding="UTF-8") as fo:
             fo.write(content)
+
+
+
+        print(f1.all())
 
 
 if __name__ == "__main__":

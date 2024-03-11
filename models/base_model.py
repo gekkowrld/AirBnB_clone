@@ -50,6 +50,7 @@ class BaseModel:
         from models import storage
 
         self.updated_at = datetime.now()
+        storage.new(self)
         storage.save()
 
     def __str__(self):
