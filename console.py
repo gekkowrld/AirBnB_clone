@@ -54,19 +54,20 @@ class HBNBCommand(cmd.Cmd):
             "Review": Review,
         }
 
-        if len(my_list) < 1:
+        my_list_len = len(my_list)
+
+        if my_list_len == 0:
             print("** class name missing **")
-            HBNBCommand().cmdloop()
 
-        if my_list[0] not in class_map:
+        elif my_list_len and my_list[0] not in class_map:
             print("** class doesn't exist **")
-            HBNBCommand().cmdloop()
 
-        for class_name in class_map:
-            if class_name == my_list[0]:
-                obj = class_map[class_name]()
-                print(obj.id)
-                storage.save()
+        else:
+            for class_name in class_map:
+                if class_name == my_list[0]:
+                    obj = class_map[class_name]()
+                    print(obj.id)
+                    storage.save()
 
     def do_show(self, line):
         """Prints the string representation of an instance"""
@@ -75,19 +76,17 @@ class HBNBCommand(cmd.Cmd):
 
         my_list = self.__check(line)
 
-        my_dict = storage.all()
+        if my_list != []:
+            my_dict = storage.all()
 
-        my_key = f"{my_list[0]}.{my_list[1]}"
+            my_key = f"{my_list[0]}.{my_list[1]}"
 
-        try:
-            obj = my_dict[my_key]
-            obj_dict = obj.to_dict()
-            print(
-                f"[{obj_dict['__class__']}] ({obj_dict['id']}) {obj.__dict__}"
-            )
-        except KeyError:
-            print("** no instance found **")
-            HBNBCommand().cmdloop()
+            try:
+                obj = my_dict[my_key]
+                obj_dict = obj.to_dict()
+                print(self.handle_print(obj, obj_dict))
+            except KeyError:
+                print("** no instance found **")
 
     def do_destroy(self, line):
         """Deletes an instance based on the class name and id"""
@@ -96,14 +95,14 @@ class HBNBCommand(cmd.Cmd):
         my_list = self.__check(line)
         my_dict = storage.all()
 
-        my_key = f"{my_list[0]}.{my_list[1]}"
+        if my_list != []:
+            my_key = f"{my_list[0]}.{my_list[1]}"
 
-        try:
-            del my_dict[my_key]
-            storage.save()
-        except KeyError:
-            print("** no instance found **")
-            HBNBCommand().cmdloop()
+            try:
+                del my_dict[my_key]
+                storage.save()
+            except KeyError:
+                print("** no instance found **")
 
     def do_all(self, line):
         """Prints all string representation of all instances
@@ -128,9 +127,8 @@ class HBNBCommand(cmd.Cmd):
         if len(my_list) == 1:
             if my_list[0] not in class_list:
                 print("** class doesn't exist **")
-                HBNBCommand().cmdloop()
 
-        if my_list == [] and len(my_dict) > 0:
+        elif my_list == [] and len(my_dict) > 0:
             for key in my_dict:
                 obj_dict = my_dict[key].to_dict()
                 print_str = self.handle_print(my_dict[key], obj_dict)
@@ -156,25 +154,24 @@ class HBNBCommand(cmd.Cmd):
         my_list = self.__check(line)
         my_dict = storage.all()
 
-        if len(my_list) == 2:
-            print("** attribute name missing **")
-            HBNBCommand().cmdloop()
+        if my_list != []:
+            if len(my_list) == 2:
+                print("** attribute name missing **")
 
-        elif len(my_list) == 3:
-            print("** value missing **")
-            HBNBCommand().cmdloop()
+            elif len(my_list) == 3:
+                print("** value missing **")
 
-        new_list = my_list[:4]
+            else:
+                new_list = my_list[:4]
 
-        my_key = f"{new_list[0]}.{new_list[1]}"
+                my_key = f"{new_list[0]}.{new_list[1]}"
 
-        try:
-            obj = my_dict[my_key]
-            obj.__dict__[new_list[2]] = new_list[3]
-            storage.save()
-        except KeyError:
-            print("** no instance found **")
-            HBNBCommand().cmdloop()
+                try:
+                    obj = my_dict[my_key]
+                    obj.__dict__[new_list[2]] = new_list[3]
+                    storage.save()
+                except KeyError:
+                    print("** no instance found **")
 
     @staticmethod
     def _split(line):
@@ -199,18 +196,19 @@ class HBNBCommand(cmd.Cmd):
         ]
 
         my_list = self._split(line)
+        my_list_len = len(my_list)
 
-        if len(my_list) == 0:
+        if my_list_len == 0:
             print("** class name missing **")
-            HBNBCommand().cmdloop()
+            return []
 
-        if my_list[0] not in class_list:
+        elif my_list_len and my_list[0] not in class_list:
             print("** class doesn't exist **")
-            HBNBCommand().cmdloop()
+            return []
 
-        if len(my_list) == 1:
+        elif my_list_len == 1:
             print("** instance id missing **")
-            HBNBCommand().cmdloop()
+            return []
 
         return my_list
 
