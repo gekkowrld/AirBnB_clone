@@ -21,7 +21,7 @@ class FileStorage:
 
     def __init__(self):
         """Initializes instance attributes"""
-        self.__file_path = "file.json"
+        self.__file_path = "file.json"  # Hard code this, required
         self.__objects = {}
         self.__cls = {
             "BaseModel": BaseModel,

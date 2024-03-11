@@ -1,6 +1,9 @@
 #!/usr/bin/python3
-"""
-Script containing the entry point of the command interpreter
+
+"""Script containing the entry point of the command interpreter
+
+The commands therein follow the standards set by
+    'cmd' python module
 """
 
 import cmd
@@ -18,6 +21,45 @@ class HBNBCommand(cmd.Cmd):
 
     prompt = "(hbnb) "
 
+    # A list of commands that will be executed like:
+    #   <class name>.cmd()
+    __ad_cmd = [
+        "all",
+        "count",
+        "show",
+        "destroy",
+        "update",
+    ]
+
+    def precmd(self, line):
+        cmd_called = ""
+        try:
+            cmd_called = (
+                line.split()[0]
+                .split(
+                    "(",
+                )[0]
+                .split(".", 1)[1]
+            )
+        except IndexError:
+            pass
+        # First check if that the command is actually in the list
+        if cmd_called not in HBNBCommand.__ad_cmd:
+            return cmd.Cmd.precmd(self, line)
+
+        # Now reconstruct the arguments to pass on
+        new_line = ""
+
+        # First get the className
+        class_called = line.split(".")[0]
+
+        # Then get the values in the () to be passed
+        values_passed = ""
+
+        new_line = f"{cmd_called} {class_called} {values_passed}"
+
+        return cmd.Cmd.precmd(self, new_line)
+
     def do_EOF(self, line):
         """Ctrl-D to exit the program"""
         return True
@@ -25,6 +67,17 @@ class HBNBCommand(cmd.Cmd):
     def do_quit(self, line):
         """Quit command to exit the program"""
         return True
+
+    def do_count(self, line):
+        """Return the number of instances of a class"""
+
+        from models import storage
+
+        count = 0
+        for key, val in storage._FileStorage__objects.items():
+            if line == key.split(".")[0]:
+                count += 1
+        print(count)
 
     def emptyline(self):
         pass
@@ -264,4 +317,8 @@ class HBNBCommand(cmd.Cmd):
 
 
 if __name__ == "__main__":
-    HBNBCommand().cmdloop()
+    # Ensure that even ctrl+c is handled "correctly"
+    try:
+        HBNBCommand().cmdloop()
+    except KeyboardInterrupt:
+        pass

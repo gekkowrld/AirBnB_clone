@@ -10,14 +10,14 @@ Unittest classes:
 
 import unittest
 
-from models.engine.file_storage import FileStorage
+from models.amenity import Amenity
 from models.base_model import BaseModel
 from models.city import City
+from models.engine.file_storage import FileStorage
 from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-from models.amenity import Amenity
 
 
 class TestFileStorage_instantiation(unittest.TestCase):
@@ -40,7 +40,6 @@ class TestFileStorage_instantiation(unittest.TestCase):
         self.assertIsNotNone(f1._FileStorage__file_path)
         self.assertIsInstance(f1._FileStorage__file_path, str)
         self.assertEqual(f1._FileStorage__file_path, "my_file.json")
-
 
     def test_objects_if_private(self):
         """Checks whether the __objects attr is private"""
@@ -97,7 +96,7 @@ class TestFileStorage_all(unittest.TestCase):
 
         b1 = BaseModel()
 
-        b1_key = f'{b1.__class__.__name__}.{b1.id}'
+        b1_key = f"{b1.__class__.__name__}.{b1.id}"
 
         f1.new(b1)
 
@@ -106,6 +105,7 @@ class TestFileStorage_all(unittest.TestCase):
         self.assertNotEqual(my_dict, {})
         self.assertIn(b1_key, my_dict)
         self.assertEqual(b1, my_dict[b1_key])
+
 
 class TestFileStorage_new(unittest.TestCase):
     """Test the new method"""
@@ -116,7 +116,7 @@ class TestFileStorage_new(unittest.TestCase):
 
         b1 = BaseModel()
 
-        b1_key = f'{b1.__class__.__name__}.{b1.id}'
+        b1_key = f"{b1.__class__.__name__}.{b1.id}"
 
         f1.new(b1)
 
@@ -132,7 +132,7 @@ class TestFileStorage_new(unittest.TestCase):
 
         a1 = Amenity()
 
-        a1_key = f'{a1.__class__.__name__}.{a1.id}'
+        a1_key = f"{a1.__class__.__name__}.{a1.id}"
 
         f1.new(a1)
 
@@ -148,7 +148,7 @@ class TestFileStorage_new(unittest.TestCase):
 
         s1 = State()
 
-        s1_key = f'{s1.__class__.__name__}.{s1.id}'
+        s1_key = f"{s1.__class__.__name__}.{s1.id}"
 
         f1.new(s1)
 
@@ -164,7 +164,7 @@ class TestFileStorage_new(unittest.TestCase):
 
         u1 = User()
 
-        u1_key = f'{u1.__class__.__name__}.{u1.id}'
+        u1_key = f"{u1.__class__.__name__}.{u1.id}"
 
         f1.new(u1)
 
@@ -179,7 +179,7 @@ class TestFileStorage_new(unittest.TestCase):
         f1 = FileStorage()
         c1 = City()
 
-        c1_key = f'{c1.__class__.__name__}.{c1.id}'
+        c1_key = f"{c1.__class__.__name__}.{c1.id}"
 
         f1.new(c1)
 
@@ -194,7 +194,7 @@ class TestFileStorage_new(unittest.TestCase):
         f1 = FileStorage()
         r1 = Review()
 
-        r1_key = f'{r1.__class__.__name__}.{r1.id}'
+        r1_key = f"{r1.__class__.__name__}.{r1.id}"
 
         f1.new(r1)
 
@@ -209,7 +209,7 @@ class TestFileStorage_new(unittest.TestCase):
         f1 = FileStorage()
         p1 = Place()
 
-        p1_key = f'{p1.__class__.__name__}.{p1.id}'
+        p1_key = f"{p1.__class__.__name__}.{p1.id}"
 
         f1.new(p1)
 
@@ -225,7 +225,8 @@ class TestFileStorage_save(unittest.TestCase):
 
     def test_file_content(self):
         """Tests the content of our file"""
-        import os, json
+        import json
+        import os
 
         f1 = FileStorage()
 
@@ -249,11 +250,12 @@ class TestFileStorage_save(unittest.TestCase):
 
         self.assertIsInstance(obj_dict, dict)
 
-        b1_key = f'{b1.__class__.__name__}.{b1.id}'
-        u1_key = f'{u1.__class__.__name__}.{u1.id}'
+        b1_key = f"{b1.__class__.__name__}.{b1.id}"
+        u1_key = f"{u1.__class__.__name__}.{u1.id}"
 
         self.assertIn(b1_key, obj_dict)
         self.assertIn(u1_key, obj_dict)
+
 
 class TestFileStorage_reload(unittest.TestCase):
     """Tests the reload method"""
@@ -267,12 +269,16 @@ class TestFileStorage_reload(unittest.TestCase):
         if os.path.exists(FileStorage()._FileStorage__file_path):
             os.remove(FileStorage()._FileStorage__file_path)
 
-        content = '{"BaseModel.15495279-5c36-40ee-b8a5-1a7bf333e8d8": '\
-            '{"id": "15495279-5c36-40ee-b8a5-1a7bf333e8d8", "created_at": "2024-03-11T18:08:11.572045", '\
+        content = (
+            '{"BaseModel.15495279-5c36-40ee-b8a5-1a7bf333e8d8": '
+            '{"id": "15495279-5c36-40ee-b8a5-1a7bf333e8d8", "created_at": "2024-03-11T18:08:11.572045", '
             '"updated_at": "2024-03-11T18:08:11.572045", "__class__": "BaseModel"} '
+        )
         key = "BaseModel.15495279-5c36-40ee-b8a5-1a7bf333e8d8"
 
-        with open(FileStorage()._FileStorage__file_path, "w", encoding="UTF-8") as fo:
+        with open(
+            FileStorage()._FileStorage__file_path, "w", encoding="UTF-8"
+        ) as fo:
             fo.write(content)
 
 
