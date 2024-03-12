@@ -281,8 +281,6 @@ class TestFileStorage_reload(unittest.TestCase):
         ) as fo:
             fo.write(content)
 
-
-
         print(f1.all())
 
 

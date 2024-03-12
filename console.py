@@ -32,6 +32,8 @@ class HBNBCommand(cmd.Cmd):
     ]
 
     def precmd(self, line):
+        """Take over some commands if they have a pattern"""
+
         cmd_called = ""
         try:
             cmd_called = (
@@ -55,6 +57,22 @@ class HBNBCommand(cmd.Cmd):
 
         # Then get the values in the () to be passed
         values_passed = ""
+
+        # Get all the values inside the ()
+        try:
+            values_passed = (
+                line.split("(", 1)[1]
+                .rsplit(")", 1)[0]
+                .strip()
+                .replace('"', "")
+                .replace("'", "")
+                .replace("{", "")
+                .replace("}", "")
+                .replace(":", "")
+                .replace(",", "")
+            )
+        except IndexError:
+            pass
 
         new_line = f"{cmd_called} {class_called} {values_passed}"
 
@@ -232,49 +250,56 @@ class HBNBCommand(cmd.Cmd):
 
         from models import storage
 
-        my_list = line.split('.')
-        if my_list[1] == "all()":
-            self.do_all(my_list[0])
+        my_list = line.split(".")
+        br = ""
+        cr = ""
+        try:
+            br = my_list[0]
+            cr = my_list[1]
+        except IndexError:
+            pass
+        if cr == "all()":
+            self.do_all(br)
 
-        elif my_list[1] == "count()":
+        elif cr == "count()":
             count = 0
             my_dict = storage.all()
             for key, value in my_dict.items():
-                if value.to_dict()["__class__"] == my_list[0]:
+                if value.to_dict()["__class__"] == br:
                     count += 1
             print(count)
 
-        elif my_list[1][:4] == "show":
-            stop = len(my_list[1]) - 1
-            key = my_list[1][5:stop]
-            self.do_show(f"{my_list[0]} {key}")
+        elif cr[:4] == "show":
+            stop = len(cr) - 1
+            key = cr[5:stop]
+            self.do_show(f"{br} {key}")
 
-        elif my_list[1][:7] == "destroy":
-            stop = len(my_list[1]) - 1
-            key = my_list[1][8:stop]
-            self.do_destroy(f"{my_list[0]} {key}")
+        elif cr[:7] == "destroy":
+            stop = len(cr) - 1
+            key = cr[8:stop]
+            self.do_destroy(f"{br} {key}")
 
-        elif my_list[1][:6] == "update":
-            stop = len(my_list[1]) - 1
+        elif cr[:6] == "update":
+            stop = len(cr) - 1
 
-            values = my_list[1][7:stop]
+            values = cr[7:stop]
 
             new_list = values.split(",")
 
-            len_id = len(new_list[0])
+            len_id = len(br)
 
-            update_values = values[len_id + 2:stop]
+            update_values = values[len_id + 2 : stop]
 
-            if update_values[0] != '{':
+            if update_values[0] != "{":
                 str_values = "".join(item for item in new_list)
-                self.do_update(f"{my_list[0]} {str_values}")
+                self.do_update(f"{br} {str_values}")
 
-            elif update_values[0] == '{':
+            elif update_values[0] == "{":
                 my_dict = json.loads(update_values.replace("'", '"'))
 
                 for key, value in my_dict.items():
-                    print(f"{my_list[0]} {new_list[0]} {key} {value}")
-                    self.do_update(f"{my_list[0]} {new_list[0]} {key} {value}")
+                    print(f"{br} {br} {key} {value}")
+                    self.do_update(f"{br} {br} {key} {value}")
 
     @staticmethod
     def _split(line):
@@ -317,8 +342,4 @@ class HBNBCommand(cmd.Cmd):
 
 
 if __name__ == "__main__":
-    # Ensure that even ctrl+c is handled "correctly"
-    try:
-        HBNBCommand().cmdloop()
-    except KeyboardInterrupt:
-        pass
+    HBNBCommand().cmdloop()
